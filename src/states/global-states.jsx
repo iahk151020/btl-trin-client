@@ -1,7 +1,6 @@
-import React from "react";
-import { createGlobalState, set } from "react-hooks-global-state";
+import { createGlobalState } from "react-hooks-global-state";
 
-const initialState = { login: false };
+const initialState = { login: false, viewingImage: "" };
 const { useGlobalState, setGlobalState } = createGlobalState(initialState);
 
 export { useGlobalState, setGlobalState };

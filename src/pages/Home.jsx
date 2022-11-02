@@ -1,25 +1,8 @@
 import { useState, useEffect } from "react";
-import { useGlobalState } from "../states/global-states";
+import { setGlobalState, useGlobalState } from "../states/global-states";
 import axios from "axios";
 import "./home.css";
 import { Link } from "react-router-dom";
-
-// const data = [
-//   {
-//     title: "Blue lock",
-//     author: "Nguyen Van A",
-//     genre: "sport",
-//     publishDate: "20/10/2001",
-//     pages: 30,
-//   },
-//   {
-//     title: "Goutubun Hananome",
-//     author: "Nguyen Van B",
-//     genre: "School life",
-//     publishDate: "20/10/2002",
-//     pages: 30,
-//   },
-// ];
 
 function Home() {
   const [isLoggedIn] = useGlobalState("login");
@@ -29,8 +12,11 @@ function Home() {
     axios.get("http://localhost:8000/v1/books").then((res) => {
       setAllBooks(res.data);
     });
-    // console.log(allBooks);
   }, []);
+
+  const setViewingImage = (image) => {
+    setGlobalState("viewingImage", image);
+  };
 
   const deleteItemHandler = async (key, id) => {
     axios.delete(`http://localhost:8000/v1/books/${id}`).then((res) => {
@@ -70,7 +56,13 @@ function Home() {
                 {isLoggedIn ? (
                   <div>
                     <Link to={`/view/${val._id}`}>
-                      <button>view</button>
+                      <button
+                        onClick={() => {
+                          setViewingImage(val.image);
+                        }}
+                      >
+                        view
+                      </button>
                     </Link>
                     <button onClick={(key) => deleteItemHandler(key, val._id)}>
                       delete
